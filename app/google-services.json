@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "563112861820",
+    "firebase_url": "https://tour-guide-47037.firebaseio.com",
+    "project_id": "tour-guide-47037",
+    "storage_bucket": "tour-guide-47037.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:563112861820:android:27c1cb7fe5d65c9afa69f9",
+        "android_client_info": {
+          "package_name": "fyp.tourguider"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "563112861820-h1a27nsl2u80esj7ttntt5u727chj32n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvH-7_dqhWTzr_zdBweDtdwtLy4O2iF2o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "563112861820-h1a27nsl2u80esj7ttntt5u727chj32n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

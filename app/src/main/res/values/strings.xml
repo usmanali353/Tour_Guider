@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">Tour Guider</string>
+    <string name="phone_verification_title">Enter your phone number\nto receive the code</string>
+    <string name="verification_code_title">Enter Verification Code\n Received through SMS</string>
+
+    <string-array name="roles">
+        <item>Customer</item>
+        <item>Tour Guider</item>
+    </string-array>
+    <string-array name="cities">
+        <item>Lahore</item>
+        <item>Balakot</item>
+        <item>Naran</item>
+        <item>Islamabad</item>
+        <item>Karachi</item>
+    </string-array>
+    <string name="title_activity_tour_guider_home">Tour Guider Home</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_activity_admin__home">Admin Home</string>
+    <string name="title_activity_customer_home">Customer Home</string>
+    <string name="title_activity_add_tourist_spot">Add Tourist Spot</string>
+    <string name="title_activity_cities_for_destination">Select City</string>
+    <string name="title_activity_tourist_destinations">Tourist Destinations</string>
+    <string name="title_activity_tour_guiders_list">Tour Guiders</string>
+    <string name="title_activity_add__hotel">Add Hotel</string>
+    <string name="title_activity_vehicle_list">Select Vehicle</string>
+    <string name="title_activity_hotels_list">Hotels</string>
+    <string name="title_activity_book__tour">Book Tour</string>
+    <string name="title_activity_booking_detail_page">Details</string>
+    <string name="title_activity_customer_booking_page">Customer Booking Requests</string>
+</resources>
