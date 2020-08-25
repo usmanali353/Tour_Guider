@@ -38,7 +38,6 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.google.firebase:firebase-firestore:21.5.0'
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
-    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
     implementation 'com.google.firebase:firebase-auth:19.3.2'
     implementation "androidx.preference:preference:1.1.1"
     implementation 'com.google.firebase:firebase-firestore:21.5.0'
