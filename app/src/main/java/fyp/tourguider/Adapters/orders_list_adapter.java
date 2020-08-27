@@ -34,7 +34,6 @@ public class orders_list_adapter extends RecyclerView.Adapter<orders_list_adapte
         this.bookingsId=orders_id;
         prefs= PreferenceManager.getDefaultSharedPreferences(context);
         u=new Gson().fromJson(prefs.getString("user_info",null),User.class);
-
     }
 
     @NonNull

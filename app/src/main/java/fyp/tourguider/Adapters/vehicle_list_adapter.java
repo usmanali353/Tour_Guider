@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 
 import fyp.tourguider.Book_Tour;
+import fyp.tourguider.Model.User;
 import fyp.tourguider.Model.Vehicle;
 import fyp.tourguider.R;
 import fyp.tourguider.Utils.utils;
@@ -28,11 +29,15 @@ public class vehicle_list_adapter extends RecyclerView.Adapter<vehicle_list_adap
     ArrayList<String> vehicleId;
     Context context;
     SharedPreferences prefs;
+    boolean isAdmin;
+    User u;
     public vehicle_list_adapter(ArrayList<Vehicle> vehicles, ArrayList<String> vehicleId, Context context) {
         this.vehicles = vehicles;
         this.vehicleId = vehicleId;
         this.context = context;
         prefs= PreferenceManager.getDefaultSharedPreferences(context);
+        u=new Gson().fromJson(prefs.getString("user_info",null), User.class);
+        isAdmin=prefs.getString("user_role",null)!=null;
     }
 
     @NonNull
@@ -49,9 +54,11 @@ public class vehicle_list_adapter extends RecyclerView.Adapter<vehicle_list_adap
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                prefs.edit().putString("selected_vehicle",vehicles.get(position).getName()).apply();
-                prefs.edit().putInt("selected_vehicle_rent",vehicles.get(position).getPerDayRent()).apply();
-                context.startActivity(new Intent(context, Book_Tour.class));
+                if(!isAdmin) {
+                    prefs.edit().putString("selected_vehicle", vehicles.get(position).getName()).apply();
+                    prefs.edit().putInt("selected_vehicle_rent", vehicles.get(position).getPerDayRent()).apply();
+                    context.startActivity(new Intent(context, Book_Tour.class));
+                }
             }
         });
     }

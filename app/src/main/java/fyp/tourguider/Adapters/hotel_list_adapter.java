@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 
 import fyp.tourguider.Model.Hotel;
+import fyp.tourguider.Model.User;
 import fyp.tourguider.R;
 import fyp.tourguider.Utils.utils;
 import fyp.tourguider.vehicle_list;
@@ -28,11 +29,15 @@ public class hotel_list_adapter extends RecyclerView.Adapter<hotel_list_adapter.
   ArrayList<String> hotelIds;
   Context context;
     SharedPreferences prefs;
+    User u;
+    boolean isAdmin=false;
     public hotel_list_adapter(ArrayList<Hotel> hotels, ArrayList<String> hotelIds, Context context) {
         this.hotels = hotels;
         this.hotelIds = hotelIds;
         this.context = context;
         prefs= PreferenceManager.getDefaultSharedPreferences(context);
+        u=new Gson().fromJson(prefs.getString("user_info",null), User.class);
+        isAdmin=prefs.getString("user_role",null)!=null;
     }
 
     @NonNull
@@ -49,9 +54,11 @@ public class hotel_list_adapter extends RecyclerView.Adapter<hotel_list_adapter.
        holder.card.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               prefs.edit().putString("selected_hotel",hotels.get(position).getName()).apply();
-               prefs.edit().putInt("selected_hotel_rent",hotels.get(position).getPerNightRent()).apply();
-                context.startActivity(new Intent(context, vehicle_list.class));
+               if(!isAdmin){
+                   prefs.edit().putString("selected_hotel",hotels.get(position).getName()).apply();
+                   prefs.edit().putInt("selected_hotel_rent",hotels.get(position).getPerNightRent()).apply();
+                   context.startActivity(new Intent(context, vehicle_list.class));
+               }
            }
        });
     }

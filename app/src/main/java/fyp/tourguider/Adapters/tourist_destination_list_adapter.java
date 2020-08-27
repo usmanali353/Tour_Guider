@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fyp.tourguider.Model.TouristDestination;
+import fyp.tourguider.Model.User;
 import fyp.tourguider.R;
 import fyp.tourguider.Utils.utils;
 import fyp.tourguider.tour_guiders_list;
@@ -37,6 +38,8 @@ public class tourist_destination_list_adapter extends RecyclerView.Adapter<touri
  ArrayList<String> touristDestinationId;
  String city,cityId;
  SharedPreferences prefs;
+ User u;
+ boolean isAdmin=false;
     public tourist_destination_list_adapter(ArrayList<TouristDestination> touristDestinations, Context context, ArrayList<String> touristDestinationId,String city,String cityId) {
         this.touristDestinations = touristDestinations;
         this.context = context;
@@ -44,6 +47,8 @@ public class tourist_destination_list_adapter extends RecyclerView.Adapter<touri
         this.city=city;
         this.cityId=cityId;
         prefs= PreferenceManager.getDefaultSharedPreferences(context);
+        u=new Gson().fromJson(prefs.getString("user_info",null), User.class);
+        isAdmin=prefs.getString("user_role",null)!=null;
     }
 
     @NonNull
@@ -59,31 +64,33 @@ public class tourist_destination_list_adapter extends RecyclerView.Adapter<touri
       holder.card.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-              PopupMenu popup=new PopupMenu(context,v);
-              popup.getMenuInflater().inflate(R.menu.desitination_popup,popup.getMenu());
-              popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                  @Override
-                  public boolean onMenuItemClick(MenuItem item) {
-                      if(item.getItemId()==R.id.book_guides){
-                          prefs.edit().putString("selected_destination",touristDestinations.get(position).getName()).apply();
-                          context.startActivity(new Intent(context, tour_guiders_list.class).putExtra("city",city).putExtra("CityId",cityId).putExtra("destinationName",touristDestinations.get(position).getName()));
-                      }else if(item.getItemId()==R.id.get_directions){
-                          try{
-                              Geocoder g=new Geocoder(context);
-                              List<Address> addresses=g.getFromLocationName(touristDestinations.get(position).getName(),1);
-                              Log.e("location",String.valueOf(addresses.get(0).getLatitude()+","+addresses.get(0).getLatitude()+","+addresses.get(0).getLongitude()));
-                              Uri gmmIntentUri = Uri.parse("google.navigation:q="+addresses.get(0).getLatitude()+","+addresses.get(0).getLongitude());
-                              Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                              mapIntent.setPackage("com.google.android.apps.maps");
-                              context.startActivity(mapIntent);
-                          }catch (Exception e){
-                              e.printStackTrace();
+              if(!isAdmin){
+                  PopupMenu popup=new PopupMenu(context,v);
+                  popup.getMenuInflater().inflate(R.menu.desitination_popup,popup.getMenu());
+                  popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                      @Override
+                      public boolean onMenuItemClick(MenuItem item) {
+                          if(item.getItemId()==R.id.book_guides){
+                              prefs.edit().putString("selected_destination",touristDestinations.get(position).getName()).apply();
+                              context.startActivity(new Intent(context, tour_guiders_list.class).putExtra("city",city).putExtra("CityId",cityId).putExtra("destinationName",touristDestinations.get(position).getName()));
+                          }else if(item.getItemId()==R.id.get_directions){
+                              try{
+                                  Geocoder g=new Geocoder(context);
+                                  List<Address> addresses=g.getFromLocationName(touristDestinations.get(position).getName(),1);
+                                  Log.e("location",String.valueOf(addresses.get(0).getLatitude()+","+addresses.get(0).getLatitude()+","+addresses.get(0).getLongitude()));
+                                  Uri gmmIntentUri = Uri.parse("google.navigation:q="+addresses.get(0).getLatitude()+","+addresses.get(0).getLongitude());
+                                  Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                                  mapIntent.setPackage("com.google.android.apps.maps");
+                                  context.startActivity(mapIntent);
+                              }catch (Exception e){
+                                  e.printStackTrace();
+                              }
                           }
+                          return true;
                       }
-                      return true;
-                  }
-              });
-                popup.show();
+                  });
+                  popup.show();
+              }
           }
       });
     }
