@@ -32,12 +32,12 @@ public class tour_guider_home extends AppCompatActivity {
         setSupportActionBar(toolbar);
         requests=findViewById(R.id.requests);
         requests.setLayoutManager(new LinearLayoutManager(this));
-        Firebase_Operations.getRequestGuider(this,FirebaseAuth.getInstance().getCurrentUser().getUid(),requests);
+//        Firebase_Operations.getRequestGuider(this,FirebaseAuth.getInstance().getCurrentUser().getUid(),requests);
         prefs= PreferenceManager.getDefaultSharedPreferences(this);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main,menu);
+        getMenuInflater().inflate(R.menu.admin_home_menu,menu);
         return true;
     }
 
@@ -48,6 +48,8 @@ public class tour_guider_home extends AppCompatActivity {
             prefs.edit().remove("user_info").apply();
             startActivity(new Intent(tour_guider_home.this,Login.class));
             finish();
+        }else if(item.getItemId()==R.id.view_tourist_spots_and_hotels){
+            startActivity(new Intent(tour_guider_home.this,CitiesAdmin.class));
         }
         return true;
     }
