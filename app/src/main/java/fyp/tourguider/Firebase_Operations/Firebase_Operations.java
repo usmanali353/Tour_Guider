@@ -73,7 +73,7 @@ public class Firebase_Operations {
         });
 
     }
-    public static void getCities(Context context, RecyclerView citiesList){
+    public static void getCities(Context context, RecyclerView citiesList,String page){
         ProgressDialog pd=new ProgressDialog(context);
         pd.setMessage("getting Cities....");
         pd.show();
@@ -88,7 +88,7 @@ public class Firebase_Operations {
                         cities.add(queryDocumentSnapshots.getDocuments().get(i).toObject(City.class));
                         cityIds.add(queryDocumentSnapshots.getDocuments().get(i).getId());
                     }
-                    citiesList.setAdapter(new cities_list_adapter(cities,cityIds,context));
+                    citiesList.setAdapter(new cities_list_adapter(cities,cityIds,context,page));
                 }else{
                     Toast.makeText(context,"No Cities Found",Toast.LENGTH_LONG).show();
                 }

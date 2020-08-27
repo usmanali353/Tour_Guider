@@ -149,7 +149,7 @@ public class Admin_Home extends AppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main,menu);
+        getMenuInflater().inflate(R.menu.admin_home_menu,menu);
         return true;
     }
 
@@ -160,6 +160,8 @@ public class Admin_Home extends AppCompatActivity {
             prefs.edit().remove("user_role").apply();
             startActivity(new Intent(Admin_Home.this,Login.class));
             finish();
+        }else if(item.getItemId()==R.id.view_tourist_spots_and_hotels){
+            startActivity(new Intent(Admin_Home.this,CitiesAdmin.class));
         }
         return true;
     }

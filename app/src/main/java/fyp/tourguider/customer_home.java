@@ -33,7 +33,7 @@ SharedPreferences prefs;
         prefs= PreferenceManager.getDefaultSharedPreferences(this);
         citiesList=findViewById(R.id.cities);
         citiesList.setLayoutManager(new LinearLayoutManager(this));
-        Firebase_Operations.getCities(customer_home.this,citiesList);
+        Firebase_Operations.getCities(customer_home.this,citiesList,"Add");
     }
 
     @Override
@@ -51,6 +51,8 @@ SharedPreferences prefs;
             finish();
         }else if(item.getItemId()==R.id.bookings){
             startActivity(new Intent(this,customer_booking_page.class));
+        }else if(item.getItemId()==R.id.chatbot){
+            startActivity(new Intent(this,chatbot.class).putExtra("url","https://console.dialogflow.com/api-client/demo/embedded/e41f3ffd-187b-43a5-9890-afc4cc85359d"));
         }
         return true;
     }

@@ -31,6 +31,7 @@ import fyp.tourguider.Model.User;
 import fyp.tourguider.R;
 import fyp.tourguider.TouristDestinations;
 import fyp.tourguider.add_tourist_spot;
+import fyp.tourguider.hotels_list;
 
 public class cities_list_adapter extends RecyclerView.Adapter<cities_list_adapter.cities_list_viewholder> {
     ArrayList<City> cities;
@@ -39,13 +40,15 @@ public class cities_list_adapter extends RecyclerView.Adapter<cities_list_adapte
     SharedPreferences prefs;
     User u;
     boolean isAdmin=false;
-    public cities_list_adapter(ArrayList<City> cities, ArrayList<String> citiesId, Context context) {
+    String page;
+    public cities_list_adapter(ArrayList<City> cities, ArrayList<String> citiesId, Context context,String page) {
         this.cities = cities;
         this.citiesId = citiesId;
         this.context = context;
         prefs= PreferenceManager.getDefaultSharedPreferences(context);
          u=new Gson().fromJson(prefs.getString("user_info",null),User.class);
          isAdmin=prefs.getString("user_role",null)!=null;
+         this.page=page;
     }
 
     @NonNull
@@ -66,7 +69,7 @@ public class cities_list_adapter extends RecyclerView.Adapter<cities_list_adapte
        holder.card.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-              if(isAdmin){
+              if(isAdmin&&page.equals("Add")){
                   PopupMenu popup=new PopupMenu(context,v);
                   popup.getMenuInflater().inflate(R.menu.admin_popup,popup.getMenu());
                   popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -76,6 +79,21 @@ public class cities_list_adapter extends RecyclerView.Adapter<cities_list_adapte
                               context.startActivity(new Intent(context, add_tourist_spot.class).putExtra("city",cities.get(position).getCityName()).putExtra("CityId",citiesId.get(position)));
                           }else if(item.getItemId()==R.id.add_hotel){
                               context.startActivity(new Intent(context, Add_Hotel.class).putExtra("city",cities.get(position).getCityName()).putExtra("CityId",citiesId.get(position)));
+                          }
+                          return true;
+                      }
+                  });
+                  popup.show();
+              }else if(page.equals("View")){
+                  PopupMenu popup=new PopupMenu(context,v);
+                  popup.getMenuInflater().inflate(R.menu.viewhotelspot,popup.getMenu());
+                  popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                      @Override
+                      public boolean onMenuItemClick(MenuItem item) {
+                          if(item.getItemId()==R.id.view_hotels){
+                              context.startActivity(new Intent(context, hotels_list.class).putExtra("city",cities.get(position).getCityName()).putExtra("CityId",citiesId.get(position)));
+                          }else if(item.getItemId()==R.id.view_tourist_spots){
+                              context.startActivity(new Intent(context, TouristDestinations.class).putExtra("city",cities.get(position).getCityName()).putExtra("CityId",citiesId.get(position)));
                           }
                           return true;
                       }

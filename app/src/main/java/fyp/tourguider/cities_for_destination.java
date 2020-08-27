@@ -24,7 +24,7 @@ public class cities_for_destination extends AppCompatActivity {
         setSupportActionBar(toolbar);
         citiesList=findViewById(R.id.cities);
         citiesList.setLayoutManager(new LinearLayoutManager(this));
-        Firebase_Operations.getCities(cities_for_destination.this,citiesList);
+        Firebase_Operations.getCities(cities_for_destination.this,citiesList,"Add");
     }
 
 }

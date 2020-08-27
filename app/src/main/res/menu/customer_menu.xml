@@ -8,5 +8,9 @@
         android:id="@+id/bookings"
         android:title="Booking Request"
         />
+    <item
+        android:id="@+id/chatbot"
+        android:title="Chatbot"
+        />
 
 </menu>

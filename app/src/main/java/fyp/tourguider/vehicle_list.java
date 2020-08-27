@@ -35,20 +35,6 @@ public class vehicle_list extends AppCompatActivity {
         prefs= PreferenceManager.getDefaultSharedPreferences(this);
     }
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.skip_menu,menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId()==R.id.skip){
-            startActivity(new Intent(this,Book_Tour.class));
-        }
-        return true;
-    }
-
-    @Override
     public void onBackPressed() {
         super.onBackPressed();
         prefs.edit().remove("selected_vehicle").apply();

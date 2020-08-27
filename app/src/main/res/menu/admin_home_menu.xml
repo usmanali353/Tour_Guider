@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/view_tourist_spots_and_hotels"
+        android:title="View Tourist Spots and Hotels"
+        />
+    <item
+        android:id="@+id/signOut"
+        android:title="Sign Out"
+        />
+</menu>

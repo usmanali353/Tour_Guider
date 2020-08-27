@@ -35,4 +35,5 @@
     <string name="title_activity_book__tour">Book Tour</string>
     <string name="title_activity_booking_detail_page">Details</string>
     <string name="title_activity_customer_booking_page">Customer Booking Requests</string>
+    <string name="title_activity_cities_admin">Cities</string>
 </resources>

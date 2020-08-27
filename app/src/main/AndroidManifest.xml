@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="fyp.tourguider">
-
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo"
@@ -12,9 +11,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".CitiesAdmin"
+            android:label="@string/title_activity_cities_admin"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".customer_booking_page"
             android:label="@string/title_activity_customer_booking_page"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".BookingDetailPage"
             android:label="@string/title_activity_booking_detail_page"
@@ -66,8 +69,7 @@
         <activity
             android:name=".Login"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme">
-        </activity>
+            android:theme="@style/AppTheme"></activity>
         <activity
             android:name=".verify_code_page"
             android:screenOrientation="portrait"
@@ -75,16 +77,17 @@
         <activity
             android:name=".splashScreen"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
-            >
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
+        <activity
+            android:name=".chatbot"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

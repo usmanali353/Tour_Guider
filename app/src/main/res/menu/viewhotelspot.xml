@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item
+    android:id="@+id/view_hotels"
+    android:title="View Hotels"
+    />
+    <item
+        android:id="@+id/view_tourist_spots"
+        android:title="View Tourist Spots"
+        />
+</menu>
