@@ -85,12 +85,12 @@ public class BookingDetailPage extends AppCompatActivity {
                     AlertDialog.Builder changeStatus=new AlertDialog.Builder(BookingDetailPage.this);
                     changeStatus.setTitle("Change Status");
                     changeStatus.setMessage("do you want Cancel this Request");
-                    changeStatus.setPositiveButton("Approve", new DialogInterface.OnClickListener() {
+                    changeStatus.setPositiveButton("Cancel Request", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Firebase_Operations.changeStatus(BookingDetailPage.this,"Canceled",getIntent().getStringExtra("booking_id"),u.getRole());
                         }
-                    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    }).setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
