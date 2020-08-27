@@ -58,7 +58,6 @@
                 app:ms_hint="Choose City"
                 app:ms_floatingLabelText="City"
                 android:visibility="gone"
-                android:entries="@array/cities"
                 android:id="@+id/city"
                 />
             <com.rengwuxian.materialedittext.MaterialEditText

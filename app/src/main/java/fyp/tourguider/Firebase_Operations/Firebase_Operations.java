@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -134,70 +135,97 @@ public class Firebase_Operations {
         ProgressDialog pd=new ProgressDialog(context);
         pd.setMessage("Checking if Already Exists....");
         pd.show();
+        ArrayList<City> cities=new ArrayList<>();
+        ArrayList<String>  cityNames=new ArrayList<>();
         SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(context);
         FirebaseFirestore.getInstance().collection("Users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                pd.dismiss();
              if(!documentSnapshot.exists()){
-                 View v= LayoutInflater.from(context).inflate(R.layout.layout_register,null);
-                 MaterialEditText name=v.findViewById(R.id.nametxt);
-                 MaterialEditText email=v.findViewById(R.id.emailtxt);
-                 MaterialSpinner city=v.findViewById(R.id.city);
-                 MaterialSpinner role=v.findViewById(R.id.role);
-                 MaterialEditText hourlyRate=v.findViewById(R.id.rate_txt);
-                 hourlyRate.setVisibility(View.GONE);
-                 role.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                 FirebaseFirestore.getInstance().collection("City").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                      @Override
-                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                         if(position==1){
-                             hourlyRate.setVisibility(View.VISIBLE);
-                             city.setVisibility(View.VISIBLE);
-                         }else{
+                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                         pd.dismiss();
+                         if(queryDocumentSnapshots.getDocuments().size()>0){
+                             for(int i=0;i<queryDocumentSnapshots.getDocuments().size();i++){
+                                 cities.add(queryDocumentSnapshots.getDocuments().get(i).toObject(City.class));
+                                 cityNames.add(queryDocumentSnapshots.getDocuments().get(i).toObject(City.class).getCityName());
+                             }
+                             View v= LayoutInflater.from(context).inflate(R.layout.layout_register,null);
+                             MaterialEditText name=v.findViewById(R.id.nametxt);
+                             MaterialEditText email=v.findViewById(R.id.emailtxt);
+                             MaterialSpinner city=v.findViewById(R.id.city);
+                             MaterialSpinner role=v.findViewById(R.id.role);
+                             MaterialEditText hourlyRate=v.findViewById(R.id.rate_txt);
+                             ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, cityNames);
+                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                             city.setAdapter(adapter);
                              hourlyRate.setVisibility(View.GONE);
-                             city.setVisibility(View.GONE);
+                             role.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                 @Override
+                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                     if(position==1){
+                                         hourlyRate.setVisibility(View.VISIBLE);
+                                         city.setVisibility(View.VISIBLE);
+                                     }else{
+                                         hourlyRate.setVisibility(View.GONE);
+                                         city.setVisibility(View.GONE);
+                                     }
+                                 }
+
+                                 @Override
+                                 public void onNothingSelected(AdapterView<?> parent) {
+
+                                 }
+                             });
+                             AlertDialog registerUserDialog =new AlertDialog.Builder(context)
+                                     .setTitle("Register User")
+                                     .setPositiveButton("Register", new DialogInterface.OnClickListener() {
+                                         @Override
+                                         public void onClick(DialogInterface dialog, int which) {
+
+
+                                         }
+                                     }).setView(v).create();
+                             registerUserDialog.show();
+                             registerUserDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                                 @Override
+                                 public void onClick(View v) {
+                                     if(name.getText().toString().isEmpty()){
+                                         name.setError("Enter Name");
+                                     }else if(email.getText().toString().isEmpty()){
+                                         email.setError("Enter Email");
+                                     }else if(!utils.isEmailValid(email.getText().toString())){
+                                         email.setError("Email is Invalid");
+                                     }else if(role.getSelectedItem()==null){
+                                         role.setError("Please Select Role");
+                                     }else if(hourlyRate.getVisibility()==View.VISIBLE&&hourlyRate.getText().toString().isEmpty()){
+                                         hourlyRate.setError("Enter Hourly Rate");
+                                     }else if(city.getVisibility()==View.VISIBLE&&city.getSelectedItem()==null){
+                                         city.setError("Please Select City");
+                                     }else {
+                                         if(hourlyRate.getVisibility()==View.VISIBLE&&city.getVisibility()==View.VISIBLE) {
+                                             register(context, userId, name.getText().toString(), role.getSelectedItem().toString(), email.getText().toString(), Integer.parseInt(hourlyRate.getText().toString()),city.getSelectedItem().toString(),phone);
+                                         }else{
+                                             register(context, userId, name.getText().toString(), role.getSelectedItem().toString(), email.getText().toString(),0,null,phone);
+                                         }
+                                     }
+                                 }
+                             });
+
+                         }else{
+                             Toast.makeText(context,"No Cities Found",Toast.LENGTH_LONG).show();
                          }
+
                      }
-
+                 }).addOnFailureListener(new OnFailureListener() {
                      @Override
-                     public void onNothingSelected(AdapterView<?> parent) {
-
+                     public void onFailure(@NonNull Exception e) {
+                         pd.dismiss();
+                         Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
                      }
                  });
-                 AlertDialog registerUserDialog =new AlertDialog.Builder(context)
-                         .setTitle("Register User")
-                         .setPositiveButton("Register", new DialogInterface.OnClickListener() {
-                             @Override
-                             public void onClick(DialogInterface dialog, int which) {
 
-
-                             }
-                         }).setView(v).create();
-                   registerUserDialog.show();
-                   registerUserDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                       @Override
-                       public void onClick(View v) {
-                           if(name.getText().toString().isEmpty()){
-                               name.setError("Enter Name");
-                           }else if(email.getText().toString().isEmpty()){
-                               email.setError("Enter Email");
-                           }else if(!utils.isEmailValid(email.getText().toString())){
-                               email.setError("Email is Invalid");
-                           }else if(role.getSelectedItem()==null){
-                               role.setError("Please Select Role");
-                           }else if(hourlyRate.getVisibility()==View.VISIBLE&&hourlyRate.getText().toString().isEmpty()){
-                               hourlyRate.setError("Enter Hourly Rate");
-                           }else if(city.getVisibility()==View.VISIBLE&&city.getSelectedItem()==null){
-                               city.setError("Please Select City");
-                           }else {
-                               if(hourlyRate.getVisibility()==View.VISIBLE&&city.getVisibility()==View.VISIBLE) {
-                                   register(context, userId, name.getText().toString(), role.getSelectedItem().toString(), email.getText().toString(), Integer.parseInt(hourlyRate.getText().toString()),city.getSelectedItem().toString(),phone);
-                               }else{
-                                   register(context, userId, name.getText().toString(), role.getSelectedItem().toString(), email.getText().toString(),0,null,phone);
-                               }
-                           }
-                       }
-                   });
              }else{
                  User u=documentSnapshot.toObject(User.class);
                  prefs.edit().putString("user_info",new Gson().toJson(u)).apply();
