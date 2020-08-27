@@ -46,6 +46,11 @@ public class BookingDetailPage extends AppCompatActivity {
         guide=findViewById(R.id.guider);
         btn=findViewById(R.id.btn);
         guideRent=findViewById(R.id.guider_rate);
+        if(u.getRole().equals("Customer")){
+            btn.setText("Cancel Request");
+        }else{
+            btn.setText("Change Status");
+        }
         //setting Values
         if(booking.getStatus().equals("Canceled")){
             btn.setVisibility(View.GONE);
@@ -56,7 +61,9 @@ public class BookingDetailPage extends AppCompatActivity {
         if(booking.getStatus().equals("Rejected")){
             btn.setVisibility(View.GONE);
         }
-        btn.setText("Change Status");
+
+
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
